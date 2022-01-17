@@ -1,0 +1,78 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oura
+data:
+  daemon.toml: |-
+    [source]
+    type = "N2N"
+    address = ["Tcp", "relays-new.cardano-mainnet.iohk.io:3001"]
+    magic = "mainnet"
+    #since = [26785934, "92d994d49e93b1b4c47383647bd71a965371976d33e84a74a91eae0a3c47b45d"]
+    #since = [29100429, "8a4f144f0b195522b9d5f7a4c798611cca6e0313c8bd1a01e17386d92bec41be"]
+    since = [47494387, "8741e7ef3c24c1940df89930bce63a2cb2471a3efdf9ae7957c63c5d5170011e"]
+
+    [[filters]]
+    type = "Fingerprint"
+
+    [[filters]]
+    type = "Selection"
+
+    [filters.check]
+    predicate = "variant_in"
+    argument = ["CIP25Asset"]
+
+    [sink]
+    type = "Elastic"
+    url = "https://sink-es-http:9200"
+    index = "oura.sink.cip25assets"
+    idempotency = true
+
+    [sink.credentials]
+    type = "Basic"
+    username = "elastic"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oura
+  labels:
+    app: oura
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oura
+  template:
+    metadata:
+      labels:
+        app: oura
+    spec:
+      containers:
+      - name: main
+        image: ghcr.io/txpipe/oura:v1.0.0
+        env:
+          - name: "RUST_LOG"
+            value: "info"
+          - name: "OURA_SINK_CREDENTIALS_PASSWORD"
+            valueFrom:
+              secretKeyRef:
+                key: elastic
+                name: sink-es-elastic-user 
+        resources:
+          requests:
+            memory: 100Mi
+            cpu: 50m
+          limits:
+            memory: 500Mi
+            cpu: 200m
+        args:
+          - "daemon"
+        volumeMounts:
+          - mountPath: /etc/oura
+            name: oura-config
+      volumes:
+      - name: oura-config
+        configMap:
+          name: oura

@@ -1,0 +1,40 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: elastic
+deploy:
+  kubectl:
+    manifests:
+      - k8s/elastic.yaml
+---
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: oura
+requires:
+  - configs: [elastic]  
+deploy:
+  kubectl:
+    manifests:
+      - k8s/oura.yaml
+---
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: web
+requires:
+  - configs: [elastic, oura]
+build:
+  artifacts:
+    - image: web
+      context: web
+deploy:
+  kubectl:
+    manifests:
+      - k8s/web.yaml
+portForward:
+  - resourceType: deployment
+    resourceName: web
+    port: 3000
+    localPort: 3000
+

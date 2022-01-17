@@ -1,0 +1,79 @@
+{
+    "template": {
+        "mappings": {
+            "properties": {
+                "@timestamp": {
+                    "type": "date"
+                },
+                "context": {
+                    "properties": {
+                        "block_number": {
+                            "type": "long"
+                        },
+                        "block_hash": {
+                            "type": "keyword"
+                        },
+                        "input_idx": {
+                            "type": "long"
+                        },
+                        "output_idx": {
+                            "type": "long"
+                        },
+                        "certificate_idx": {
+                            "type": "long"
+                        },
+                        "slot": {
+                            "type": "long"
+                        },
+                        "timestamp": {
+                            "type": "long"
+                        },
+                        "tx_hash": {
+                            "type": "keyword"
+                        },
+                        "tx_idx": {
+                            "type": "long"
+                        }
+                    }
+                },
+                "cip25_asset": {
+                    "properties": {
+                        "policy": {
+                            "type": "keyword"
+                        },
+                        "asset": {
+                            "type": "keyword"
+                        },
+                        "name": {
+                            "type": "text"
+                        },
+                        "mediatType": {
+                            "type": "keyword"
+                        },
+                        "image": {
+                            "type": "keyword"
+                        },
+                        "description": {
+                            "type": "text"
+                        },
+                        "raw_json": {
+                            "enabled": false
+                        }
+                    }
+                },
+                "fingerprint": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                },
+                "variant": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                }
+            }
+        }
+    },
+    "data_stream": {},
+    "index_patterns": [
+        "oura.sink.cip25"
+    ]
+}
