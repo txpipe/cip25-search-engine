@@ -1,16 +1,15 @@
 
 
 import { Dialog } from '@headlessui/react'
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren } from 'react';
 
 import { OuraRecord } from '~/fetching'
 
-import { Fragment } from 'react'
 import { Tab } from '@headlessui/react'
 import classNames from 'classnames';
 
-import { BeakerIcon } from '@heroicons/react/solid'
-import { findKnownAttributes } from '~/parsing';
+import { ArrowCircleDownIcon } from '@heroicons/react/outline'
+import { AssetFile, yieldAssetFiles, yieldAssetProperties } from '~/parsing';
 
 function NiceTabPanel(props: PropsWithChildren<{}>) {
     return (<Tab.Panel className="flex flex-col flex-grow">{props.children}</Tab.Panel>)
@@ -29,25 +28,30 @@ function NiceTab(props: { label: string, selected: boolean }) {
     )
 }
 
-function FileRow(props: {}) {
+function FileRow(props: { dto: AssetFile }) {
+    const { dto } = props;
+
     return (
         <tr>
             <td className="px-6 py-4 whitespace-nowrap">
-                name
+                {dto.name || "default"}
             </td>
             <td className="px-6 py-4 whitespace-nowrap">
                 <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                    image/png
+                    {dto.mediaType || "unknown"}
                 </span>
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <BeakerIcon className="h-5 w-5 text-indigo-500" />
+                <ArrowCircleDownIcon className="h-7 text-indigo-500" />
             </td>
         </tr>
     )
 }
 
-function Files() {
+
+function Files(props: { dto: OuraRecord }) {
+    const files = yieldAssetFiles(props.dto.cip25_asset.raw_json);
+
     return (
         <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -64,7 +68,7 @@ function Files() {
                 </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-                <FileRow />
+                {Array.from(files).map((file, idx) => <FileRow key={idx} dto={file} />)}
             </tbody>
         </table>
     )
@@ -86,7 +90,7 @@ function PropertyRow(props: { name: string, value?: string }) {
 }
 
 function Properties(props: { dto: OuraRecord }) {
-    const knownAttributes = findKnownAttributes(props.dto.cip25_asset.raw_json);
+    const properties = yieldAssetProperties(props.dto.cip25_asset.raw_json);
 
     return (
         <table className="min-w-full divide-y divide-gray-200">
@@ -101,7 +105,7 @@ function Properties(props: { dto: OuraRecord }) {
                 </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-                {Array.from(knownAttributes).map(property => <PropertyRow name={property.propertyKey} value={property.stringValue} />)}
+                {Array.from(properties).map(property => <PropertyRow name={property.propertyKey} value={property.stringValue} />)}
             </tbody>
         </table>
     )
@@ -121,7 +125,7 @@ export function TokenModal(props: {
         <Dialog open={props.open} onClose={props.onClose} className="fixed z-10 inset-0 overflow-y-auto flex justify-center items-center">
             <Dialog.Overlay className="fixed inset-0 bg-black opacity-70" />
 
-            <div className="bg-white rounded-lg text-left overflow-hidden shadow-xl transform align-middle xl:w-1/3 md:w-2/3 xs:w-full h-[80%] flex flex-col items-stretch px-4 pt-5 pb-4 sm:p-6 sm:pb-4 min-h-0">
+            <div className="bg-white rounded-lg text-left overflow-hidden shadow-xl transform align-middle lg:w-3/5 xs:w-full h-[80%] flex flex-col items-stretch px-4 pt-5 pb-4 sm:p-6 sm:pb-4 min-h-0">
                 <Dialog.Title className="text-gray-800 text-3xl mb-3">{dto.cip25_asset.name || dto.cip25_asset.asset}</Dialog.Title>
 
                 <Dialog.Description className="mb-3 text-gray-600">
@@ -139,7 +143,7 @@ export function TokenModal(props: {
                             <Properties dto={dto} />
                         </NiceTabPanel>
                         <NiceTabPanel>
-                            <Files />
+                            <Files dto={dto} />
                         </NiceTabPanel>
                         <NiceTabPanel>
                             <pre className="bg-black p-6 overflow-scroll rounded-md flex-grow basis-0">

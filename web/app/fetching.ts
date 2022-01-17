@@ -47,18 +47,24 @@ function isValidRecord(source: any): source is OuraRecord {
         !!source["cip25_asset"]["asset"] &&
         !!source["cip25_asset"]["name"] &&
         !!source["cip25_asset"]["raw_json"];
-  }
+}
 
 function newESClient() {
     const username = process.env.ELASTICSEARCH_USERNAME;
     const password = process.env.ELASTICSEARCH_PASSWORD;
 
     if (!username || !password) {
-        throw new Error("couldn't find elasticsearch credentials in env variables");
+        throw new Error("Couldn't find Elasticsearch credentials in env vars");
+    }
+
+    const url = process.env.ELASTICSEARCH_URL;
+
+    if (!url) {
+        throw new Error("Coulnd't find Elasticsearch URL in env vars");
     }
 
     return new Client({
-        node: 'https://localhost:9200',
+        node: url,
         ssl: {
             rejectUnauthorized: false,
         },
@@ -69,16 +75,31 @@ function newESClient() {
     });
 }
 
-export async function fetchByTerm(params: { term: string | null }): Promise<OuraRecord[]> {
+interface ESResultHit {
+    _id: string,
+    _source: any,
+}
+
+async function executeESQuery(body: object, size: number): Promise<ESResultHit[]> {
     const client = newESClient();
 
+    const index = process.env.ELASTICSEARCH_CIP25_INDEX;
+
+    if (!index) {
+        throw new Error("Couldn't find Elasticsearch CIP-25 index name in env variables");
+    }
+
     const res = await client.search({
-        index: "oura.sink.cip25assets",
-        body: buildTermQuery(params.term),
-        size: 40,
+        index,
+        size,
+        body,
     });
 
-    const hits = res.body.hits.hits as { _source: any }[];
+    return res.body.hits.hits as ESResultHit[];
+}
+
+export async function fetchByTerm(params: { term: string | null }): Promise<OuraRecord[]> {
+    const hits = await executeESQuery(buildTermQuery(params.term), 40);
 
     return hits
         .map(hit => hit._source)

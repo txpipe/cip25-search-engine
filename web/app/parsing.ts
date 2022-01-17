@@ -49,7 +49,7 @@ function jsonEntryToProperty(propertyKey: string, rawValue: any): AssetProperty 
     };
 }
 
-export function* findKnownAttributes(asset: Object): IterableIterator<AssetProperty> {
+export function* yieldAssetProperties(asset: Object): IterableIterator<AssetProperty> {
     for (const [propertyKey, rawValue] of Object.entries(asset)) {
         // Don't return well-knwon types, those are already shown in the UI
         if (WellKnownProperty.includes(propertyKey)) {
@@ -58,11 +58,32 @@ export function* findKnownAttributes(asset: Object): IterableIterator<AssetPrope
 
         switch (typeof rawValue) {
             case "object":
-                yield* findKnownAttributes(rawValue);
+                yield* yieldAssetProperties(rawValue);
             case "number":
             case "string":
             case "boolean":
                 yield jsonEntryToProperty(propertyKey, rawValue);
+        }
+    }
+}
+
+export interface AssetFile {
+    mediaType?: string,
+    name?: string,
+    src: string,
+}
+
+function isFileRecord(source: any): source is AssetFile {
+    return !!source?.src;
+}
+
+export function* yieldAssetFiles(asset: any): IterableIterator<AssetFile> {
+    const files = asset["files"];
+    if (!files?.length) return;
+
+    for (const obj of files) {
+        if (isFileRecord(obj)) {
+            yield obj;
         }
     }
 }
