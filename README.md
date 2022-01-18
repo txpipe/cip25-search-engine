@@ -1,6 +1,8 @@
-# CIP-25 Search Engine
+# CIP-25 Search Engine (WIP)
 
 A reference app that uses Oura + Elasticsearch + React to buid a Cardano CIP-25 search engine
+
+![Screenshot](assets/screenshot.png)
 
 ## Introduction
 
