@@ -37,7 +37,6 @@ export default function Policy() {
                             List of CIP-25 assets linked to the policy <span className="bg-gray-100 rounded-md px-4 py-2">{load?.policyId}</span>
                         </p>
                     </div>
-                    <SearchBox />
                 </div>
 
                 {!load && <div>Please specify a valid policy id</div>}
