@@ -11,7 +11,7 @@ import {
 import type { MetaFunction } from "remix";
 
 export const meta: MetaFunction = () => {
-    return { title: "New Remix App" };
+    return { title: "CIP-25 Search Engine" };
 };
 
 import styles from "./tailwind.css";
