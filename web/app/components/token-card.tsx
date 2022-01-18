@@ -41,10 +41,11 @@ function LoadableImage(props: { dto: OuraRecord }) {
     );
 }
 
-export function TokenCard(props: { dto: OuraRecord, onSelect: (dto: OuraRecord) => void }) {
+export function TokenCard(props: { dto: OuraRecord, onSelect?: (dto: OuraRecord) => void }) {
     const { dto } = props;
 
     const onSelect = useCallback(() => {
+        if (!props.onSelect) return;
         props.onSelect(dto);
     }, [dto]);
 

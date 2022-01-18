@@ -24,13 +24,14 @@ export interface OuraRecord {
 }
 
 function buildTermQuery(term?: string | null) {
-    if (!term) {
-        return { "query": { "match_all": {} } };
-    }
+    const match = !!term ? { "multi_match": { "query": term, "fields": [] } } : { "match_all": {} }
 
     return {
         "query": {
-            "multi_match": { "query": term, "fields": [] }
+            "function_score": {
+                "random_score": {},
+                "query": match,
+            }
         }
     };
 }

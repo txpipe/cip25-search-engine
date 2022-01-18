@@ -35,7 +35,7 @@ export default function () {
     return (
         <>
             <div className="w-full p-5 xl:p-12">
-            <TokenModal open={!!selected} dto={selected} onClose={() => setSelected(undefined)} />
+                <TokenModal open={!!selected} dto={selected} onClose={() => setSelected(undefined)} />
                 <div className="header flex items-center justify-between mb-12">
                     <div className="title">
                         <p className="text-4xl font-bold text-gray-800 mb-4">
