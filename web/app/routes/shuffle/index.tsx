@@ -29,7 +29,6 @@ export default function () {
                             Random list of CIP-25 assets available in Cardano mainnet
                         </p>
                     </div>
-                    <SearchBox />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-16">
                     {records.map(dto => <AssetCard key={dto.cip25_asset.policy + dto.cip25_asset.asset} dto={dto} onSelect={setSelected} />)}

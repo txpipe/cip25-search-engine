@@ -38,7 +38,6 @@ export default function () {
                             List of CIP-25 assets matching the specified term <span className="bg-gray-100 rounded-md px-4 py-2">{load?.term}</span>
                         </p>
                     </div>
-                    <SearchBox />
                 </div>
 
                 {!load && <div>Please specify a valid search term</div>}
