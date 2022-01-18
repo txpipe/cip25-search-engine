@@ -112,7 +112,7 @@ function Properties(props: { dto: OuraRecord }) {
 }
 
 
-export function TokenModal(props: {
+export default function AssetModal(props: {
     open: boolean,
     dto?: OuraRecord,
     onClose: () => void,

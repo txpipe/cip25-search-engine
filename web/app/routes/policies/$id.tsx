@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useLoaderData, LoaderFunction } from "remix";
 import SearchBox from "~/components/search-box";
-import { TokenCard } from "~/components/token-card";
-import { TokenModal } from "~/components/token-modal";
+import AssetCard from "~/components/asset-card";
+import AssetModal from "~/components/asset-modal";
 import { fetchByTerm, OuraRecord } from "~/fetching";
 
 interface Load {
@@ -27,7 +27,7 @@ export default function Policy() {
     return (
         <>
             <div className="w-full p-5 xl:p-12">
-                <TokenModal open={!!selected} dto={selected} onClose={() => setSelected(undefined)} />
+                <AssetModal open={!!selected} dto={selected} onClose={() => setSelected(undefined)} />
                 <div className="header flex items-center justify-between mb-12">
                     <div className="title">
                         <p className="text-4xl font-bold text-gray-800 mb-4">
@@ -39,13 +39,14 @@ export default function Policy() {
                     </div>
                     <SearchBox />
                 </div>
+
                 {!load && <div>Please specify a valid policy id</div>}
                 
                 {!load?.results.length && <div>No assets found for the specified policy</div>}
 
                 {!!load?.results.length &&
                     <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-16">
-                        {load.results.map(dto => <TokenCard key={dto.cip25_asset.policy + dto.cip25_asset.asset} dto={dto} onSelect={setSelected} />)}
+                        {load.results.map(dto => <AssetCard key={dto.cip25_asset.policy + dto.cip25_asset.asset} dto={dto} onSelect={setSelected} />)}
                     </div>
                 }
             </div>

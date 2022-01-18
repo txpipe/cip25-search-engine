@@ -1,5 +1,5 @@
 import { Link, LoaderFunction, useLoaderData } from "remix";
-import { TokenCard } from "~/components/token-card";
+import AssetCard from "~/components/asset-card";
 import { fetchByTerm, OuraRecord } from "~/fetching";
 
 export const loader: LoaderFunction = async ({ request }): Promise<OuraRecord[]> => {
@@ -24,7 +24,7 @@ function Intro() {
             </h2>
             <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                 <div className="rounded-md shadow">
-                    <a className="w-full flex items-center justify-center px-8 py-3  text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" href="/search">
+                    <a className="w-full flex items-center justify-center px-8 py-3  text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700" href="/shuffle">
                         Browse Tokens
                     </a>
                 </div>
@@ -52,7 +52,7 @@ export default function Index() {
         <main className="relative bg-white overflow-hidden w-screen h-screen">
             <div className="absolute left-0 top-0 bottom-0 right-0 overflow-hidden">
                 <div className="flex-grow grid grid-cols-6 gap-10">
-                    {records.map(dto => <TokenCard key={dto.cip25_asset.policy + dto.cip25_asset.asset} dto={dto} />)}
+                    {records.map(dto => <AssetCard key={dto.cip25_asset.policy + dto.cip25_asset.asset} dto={dto} />)}
                 </div>
             </div>
             <div className="relative w-full flex flex-col items-center justify-center h-full backdrop-blur-sm bg-indigo-600/30">
