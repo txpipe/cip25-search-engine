@@ -19,11 +19,14 @@ spec:
         image: web
         env:
           - name: ELASTICSEARCH_URL
-            value: https://localhost:9200
+            value: https://sink-es-http:9200
           - name: ELASTICSEARCH_USERNAME
             value: elastic
           - name: ELASTICSEARCH_PASSWORD
-            value: 34a7s4aB8DI4a4SX03dWtt8u
+            valueFrom:
+              secretKeyRef:
+                key: elastic
+                name: sink-es-elastic-user 
           - name: ELASTICSEARCH_CIP25_INDEX
             value: oura.sink.cip25assets
         resources:
