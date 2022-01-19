@@ -74,7 +74,7 @@ function Files(props: { dto: OuraRecord }) {
     )
 }
 
-function PropertyRow(props: { name: string, value?: string }) {
+function MetadataRow(props: { name: string, value?: string }) {
     return (
         <tr>
             <td className="px-6 py-4 whitespace-nowrap">
@@ -89,7 +89,7 @@ function PropertyRow(props: { name: string, value?: string }) {
     )
 }
 
-function Properties(props: { dto: OuraRecord }) {
+function Metadata(props: { dto: OuraRecord }) {
     const properties = yieldAssetProperties(props.dto.cip25_asset.raw_json);
 
     return (
@@ -106,7 +106,53 @@ function Properties(props: { dto: OuraRecord }) {
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                    {Array.from(properties).map(property => <PropertyRow name={property.propertyKey} value={property.stringValue} />)}
+                    {Array.from(properties).map(property => <MetadataRow name={property.propertyKey} value={property.stringValue} />)}
+                </tbody>
+            </table>
+        </div>
+    )
+}
+
+function BlockhainPanelRow(props: PropsWithChildren<{ name: string }>) {
+    return (
+        <tr>
+            <td className="px-6 py-4 whitespace-nowrap">
+                <div className="px-4 py-2 inline-flex text-sm text-gray-500 leading-5 rounded-full bg-amber-200">{props.name}</div>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+                {props.children}
+            </td>
+        </tr>
+    )
+}
+
+function BlockchainPanel(props: { dto: OuraRecord }) {
+    return (
+        <div className="flex flex-col flex-grow basis-0 overflow-auto">
+            <table className="divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                    <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Property
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Value
+                        </th>
+                    </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                    <BlockhainPanelRow name="Block Hash">
+                        {props.dto.context.block_hash}
+                    </BlockhainPanelRow>
+                    <BlockhainPanelRow name="Block Number">
+                        {props.dto.context.block_number}
+                    </BlockhainPanelRow>
+                    <BlockhainPanelRow name="Slot">
+                        {props.dto.context.slot}
+                    </BlockhainPanelRow>
+                    <BlockhainPanelRow name="Tx Hash">
+                        {props.dto.context.tx_hash}
+                    </BlockhainPanelRow>
                 </tbody>
             </table>
         </div>
@@ -135,16 +181,20 @@ export default function AssetModal(props: {
 
                 <Tab.Group defaultIndex={0}>
                     <Tab.List className="bg-gray-200 rounded-md p-2 mb-2">
-                        <Tab>{({ selected }) => <NiceTab selected={selected} label="Properties" />}</Tab>
+                        <Tab>{({ selected }) => <NiceTab selected={selected} label="Metadata" />}</Tab>
                         <Tab>{({ selected }) => <NiceTab selected={selected} label="Files" />}</Tab>
+                        <Tab>{({ selected }) => <NiceTab selected={selected} label="Blockchain" />}</Tab>
                         <Tab>{({ selected }) => <NiceTab selected={selected} label="JSON" />}</Tab>
                     </Tab.List>
                     <Tab.Panels className="flex flex-col items-stretch flex-grow">
                         <NiceTabPanel>
-                            <Properties dto={dto} />
+                            <Metadata dto={dto} />
                         </NiceTabPanel>
                         <NiceTabPanel>
                             <Files dto={dto} />
+                        </NiceTabPanel>
+                        <NiceTabPanel>
+                            <BlockchainPanel dto={dto} />
                         </NiceTabPanel>
                         <NiceTabPanel>
                             <pre className="bg-black p-6 overflow-scroll rounded-md flex-grow basis-0">
