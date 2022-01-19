@@ -9,9 +9,6 @@ data:
     type = "N2N"
     address = ["Tcp", "relays-new.cardano-mainnet.iohk.io:3001"]
     magic = "mainnet"
-    #since = [26785934, "92d994d49e93b1b4c47383647bd71a965371976d33e84a74a91eae0a3c47b45d"]
-    #since = [29100429, "8a4f144f0b195522b9d5f7a4c798611cca6e0313c8bd1a01e17386d92bec41be"]
-    #since = [47494387, "8741e7ef3c24c1940df89930bce63a2cb2471a3efdf9ae7957c63c5d5170011e"]
     since = [50873752, "943f92fb07b5061724f831f036ac7962d55f7b992043239265663cce387eebd5"]
 
     [[filters]]
