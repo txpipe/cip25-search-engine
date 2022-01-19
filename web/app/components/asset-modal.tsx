@@ -1,7 +1,7 @@
 
 
 import { Dialog } from '@headlessui/react'
-import { PropsWithChildren } from 'react';
+import { Fragment, PropsWithChildren } from 'react';
 
 import { OuraRecord } from '~/fetching'
 
@@ -24,7 +24,7 @@ function NiceTab(props: { label: string, selected: boolean }) {
     });
 
     return (
-        <button className={classes}>{props.label}</button>
+        <div className={classes}>{props.label}</div>
     )
 }
 
@@ -111,7 +111,6 @@ function Properties(props: { dto: OuraRecord }) {
     )
 }
 
-
 export default function AssetModal(props: {
     open: boolean,
     dto?: OuraRecord,
@@ -132,11 +131,11 @@ export default function AssetModal(props: {
                     {dto.cip25_asset.policy}
                 </Dialog.Description>
 
-                <Tab.Group defaultIndex={1}>
+                <Tab.Group defaultIndex={0}>
                     <Tab.List className="bg-gray-200 rounded-md p-2 mb-2">
                         <Tab>{({ selected }) => <NiceTab selected={selected} label="Properties" />}</Tab>
                         <Tab>{({ selected }) => <NiceTab selected={selected} label="Files" />}</Tab>
-                        <Tab>{({ selected }) => <NiceTab selected={selected} label="Raw JSON" />}</Tab>
+                        <Tab>{({ selected }) => <NiceTab selected={selected} label="JSON" />}</Tab>
                     </Tab.List>
                     <Tab.Panels className="flex flex-col items-stretch flex-grow">
                         <NiceTabPanel>
