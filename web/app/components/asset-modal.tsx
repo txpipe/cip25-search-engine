@@ -34,10 +34,10 @@ function FileRow(props: { dto: AssetFile }) {
     return (
         <tr>
             <td className="px-6 py-4 whitespace-nowrap">
-                {dto.name || "default"}
+                <span className='text-lg'>{dto.name || "default"}</span>
             </td>
             <td className="px-6 py-4 whitespace-nowrap">
-                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                <span className="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                     {dto.mediaType || "unknown"}
                 </span>
             </td>

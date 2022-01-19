@@ -94,3 +94,15 @@ export function findLastTimestamp(assets: OuraRecord[]): number | undefined {
     const last = assets[assets.length - 1];
     return last["@timestamp"];
 }
+
+export type AssetStats = {
+    propertyCount: number,
+    fileCount: number,
+}
+
+export function computeAssetStats(record: OuraRecord): AssetStats {
+    return {
+        fileCount: Array.from(yieldAssetFiles(record.cip25_asset.raw_json)).length,
+        propertyCount: Array.from(yieldAssetProperties(record.cip25_asset.raw_json)).length,
+    };
+}
