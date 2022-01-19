@@ -85,7 +85,7 @@ function MetadataPropertyBreadcrumbs(props: { ancestors: string[], leaf: string 
         <>
             {props.ancestors.map(name =>
                 <>
-                    <div className="px-4 py-1 inline-flex text-sm text-gray-500 leading-5 rounded-full bg-amber-100">
+                    <div className="px-4 py-1 inline-flex text-sm text-gray-500 leading-5 rounded-full bg-gray-100">
                         {name}
                     </div>
                     <span>&nbsp;/&nbsp;</span>
