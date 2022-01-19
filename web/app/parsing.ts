@@ -112,8 +112,9 @@ const FALLBACK_IMAGE = "";
 
 // TODO: allow change via config
 // IDEA: use round-robbing over multiple to paralelize browser requests
-const IPFS_GATEWAY = "https://cf-ipfs.com";
+// const IPFS_GATEWAY = "https://cf-ipfs.com";
 // const IPFS_GATEWAY = "https://ipfs.io";
+const IPFS_GATEWAY = "https://gateway.ipfs.io";
 
 export function rawIpfsUriToBrowserUrl(raw?: string | null): string {
     if (!raw) return FALLBACK_IMAGE;
