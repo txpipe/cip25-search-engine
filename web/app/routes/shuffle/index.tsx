@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import AssetCard from "~/components/asset-card"
 import AssetModal from "~/components/asset-modal";
+import Navbar from "~/components/navbar";
 
 export const loader: LoaderFunction = async (): Promise<OuraRecordPage> => {
     return await fetchShuffle({});
@@ -16,6 +17,7 @@ export default function () {
 
     return (
         <>
+            <Navbar />
             <div className="w-full p-5 xl:p-12">
                 <AssetModal open={!!selected} dto={selected} onClose={() => setSelected(undefined)} />
                 <div className="header flex items-center justify-between mb-12">
