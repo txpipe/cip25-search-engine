@@ -31,6 +31,9 @@ export default function () {
 
     const [selected, setSelected] = useState<OuraRecord>();
 
+    const isValid = !!load;
+    const isEmpty = isValid && !load.items.length;
+
     return (
         <>
             <Navbar />
@@ -41,15 +44,22 @@ export default function () {
                 <div className="header flex items-center justify-between mb-12">
                     <div className="title">
                         <p className="text-4xl font-bold text-gray-800 mb-4">
-                            Search by Term <span className="bg-gray-100 rounded-md px-4 py-2">{load?.term}</span>
+                            Search by Term&nbsp;<span className="bg-gray-100 rounded-md px-4 py-2">{load?.term}</span>
                         </p>
-                        <p className="text-2xl font-light text-gray-400">
-                            List of CIP-25 assets matching the specified term (showing 40 of {load?.total} assets).
-                        </p>
+
+                        {!isValid && <p className="text-2xl font-light text-gray-400">
+                            Please specify a valid search term
+                        </p>}
+
+                        {isEmpty && <p className="text-2xl font-light text-gray-400">
+                            No assets found. Try a different term. For example, "spacebud" or "equine".
+                        </p>}
+
+                        {isValid && !isEmpty && <p className="text-2xl font-light text-gray-400">
+                            List of CIP-25 assets matching the specified term (showing {load?.items.length} of {load?.total} assets).
+                        </p>}
                     </div>
                 </div>
-
-                {!load && <div>Please specify a valid search term</div>}
 
                 <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-16">
                     {!!load?.items.length && load.items.map(dto => <AssetCard key={dto.cip25_asset.policy + dto.cip25_asset.asset} dto={dto} onSelect={setSelected} />)}
