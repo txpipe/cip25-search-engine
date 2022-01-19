@@ -1,18 +1,8 @@
 import classNames from "classnames";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { OuraRecord } from "~/fetching";
-import { computeAssetStats } from "~/parsing";
+import { computeAssetStats, rawIpfsUriToBrowserUrl } from "~/parsing";
 import { LazyMount } from "~/utils";
-
-const FALLBACK_IMAGE = "https://something";
-
-function rawIpfsUriToBrowserUrl(raw?: string | null): string {
-    if (!raw) return FALLBACK_IMAGE;
-    // not nice, but works. Don't judge me.
-    raw = raw.replace("ipfs://", "");
-    raw = raw.replace("ipfs/", "");
-    return `https://ipfs.io/ipfs/${raw}`;
-}
 
 function LoadableImage(props: { dto: OuraRecord }) {
     const [loaded, setLoaded] = useState<boolean>(false);

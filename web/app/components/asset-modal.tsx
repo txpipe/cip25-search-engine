@@ -1,7 +1,7 @@
 
 
 import { Dialog } from '@headlessui/react'
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useMemo } from 'react';
 
 import { OuraRecord } from '~/fetching'
 
@@ -9,7 +9,7 @@ import { Tab } from '@headlessui/react'
 import classNames from 'classnames';
 
 import { ArrowCircleDownIcon } from '@heroicons/react/outline'
-import { AssetFile, yieldAssetFiles, yieldAssetProperties } from '~/parsing';
+import { AssetFile, rawIpfsUriToBrowserUrl, yieldAssetFiles, yieldAssetProperties } from '~/parsing';
 import { Link } from 'remix';
 
 function NiceTabPanel(props: PropsWithChildren<{}>) {
@@ -32,18 +32,22 @@ function NiceTab(props: { label: string, selected: boolean }) {
 function FileRow(props: { dto: AssetFile }) {
     const { dto } = props;
 
+    const externalUrl = useMemo(() => rawIpfsUriToBrowserUrl(dto.src), [dto]);
+
     return (
         <tr>
             <td className="px-6 py-4 whitespace-nowrap">
                 <span className='text-lg'>{dto.name || "default"}</span>
             </td>
             <td className="px-6 py-4 whitespace-nowrap">
-                <span className="px-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                <span className="px-4 py-2 inline-flex text-lg leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                     {dto.mediaType || "unknown"}
                 </span>
             </td>
             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <ArrowCircleDownIcon className="h-7 text-indigo-500" />
+                <a href={externalUrl} target="_blank">
+                    <ArrowCircleDownIcon className="h-10 text-indigo-500" />
+                </a>
             </td>
         </tr>
     )

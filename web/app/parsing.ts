@@ -106,3 +106,14 @@ export function computeAssetStats(record: OuraRecord): AssetStats {
         propertyCount: Array.from(yieldAssetProperties(record.cip25_asset.raw_json)).length,
     };
 }
+
+// TODO
+const FALLBACK_IMAGE = "";
+
+export function rawIpfsUriToBrowserUrl(raw?: string | null): string {
+    if (!raw) return FALLBACK_IMAGE;
+    // not nice, but works. Don't judge me.
+    raw = raw.replace("ipfs://", "");
+    raw = raw.replace("ipfs/", "");
+    return `https://ipfs.io/ipfs/${raw}`;
+}
