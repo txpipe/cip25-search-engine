@@ -40,7 +40,7 @@ jobs:
         uses: hiberbee/github-action-skaffold@1.15.0
         with:
           command: run
-          namespace: cip25-prod
+          namespace: cip25
           repository: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tag: ${{ github.sha }}
 

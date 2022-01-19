@@ -93,7 +93,7 @@ interface ESResultHit {
     _source: any,
 }
 
-async function executeESQuery(body: object, size: number, sort?: string[]): Promise<ESResultHit[]> {
+async function executeESQuery(body: object, size: number, sort?: string[]): Promise<{ total: number, hits: ESResultHit[] }> {
     const client = newESClient();
 
     const index = process.env.ELASTICSEARCH_CIP25_INDEX;
@@ -107,25 +107,35 @@ async function executeESQuery(body: object, size: number, sort?: string[]): Prom
         size,
         body,
         sort,
+        rest_total_hits_as_int: true,
     });
 
-    return res.body.hits.hits as ESResultHit[];
+    return res.body.hits;
 }
 
-export async function fetchShuffle(params: {}): Promise<OuraRecord[]> {
-    const query = buildShuffleQuery();
-    const hits = await executeESQuery(query, 40, []);
+export type OuraRecordPage = {
+    items: OuraRecord[],
+    total: number,
+}
 
-    return hits
+export async function fetchShuffle(params: {}): Promise<OuraRecordPage> {
+    const query = buildShuffleQuery();
+    const result = await executeESQuery(query, 40, []);
+
+    const items = result.hits
         .map(hit => hit._source)
         .filter(source => isValidRecord(source));
+
+    return { items, total: result.total };
 };
 
-export async function fetchByTerm(params: { term: string, after?: number }): Promise<OuraRecord[]> {
+export async function fetchByTerm(params: { term: string, after?: number }): Promise<OuraRecordPage> {
     const query = buildTermQuery(params.term, params.after);
-    const hits = await executeESQuery(query, 40, ["@timestamp"]);
+    const result = await executeESQuery(query, 40, ["@timestamp"]);
 
-    return hits
+    const items = result.hits
         .map(hit => hit._source)
         .filter(source => isValidRecord(source));
+
+    return { items, total: result.total };
 };

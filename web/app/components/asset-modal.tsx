@@ -9,7 +9,7 @@ import { Tab } from '@headlessui/react'
 import classNames from 'classnames';
 
 import { ArrowCircleDownIcon } from '@heroicons/react/outline'
-import { AssetFile, rawIpfsUriToBrowserUrl, yieldAssetFiles, yieldAssetProperties } from '~/parsing';
+import { AssetFile, AssetProperty, rawIpfsUriToBrowserUrl, yieldAssetFiles, yieldAssetProperties } from '~/parsing';
 import { Link } from 'remix';
 
 function NiceTabPanel(props: PropsWithChildren<{}>) {
@@ -79,15 +79,37 @@ function Files(props: { dto: OuraRecord }) {
     )
 }
 
-function MetadataRow(props: { name: string, value?: string }) {
+function MetadataPropertyBreadcrumbs(props: { ancestors: string[], leaf: string }) {
+
+    return (
+        <>
+            {props.ancestors.map(name =>
+                <>
+                    <div className="px-4 py-1 inline-flex text-sm text-gray-500 leading-5 rounded-full bg-gray-100">
+                        {name}
+                    </div>
+                    <span>&nbsp;/&nbsp;</span>
+                </>
+            )}
+            <div className="px-4 py-1 inline-flex text-sm text-gray-500 leading-5 rounded-full bg-amber-200">
+                {props.leaf}
+            </div>
+        </>
+    )
+}
+
+function MetadataRow(props: { property: AssetProperty }) {
     return (
         <tr>
             <td className="px-6 py-4 whitespace-nowrap">
-                <div className="px-4 py-2 inline-flex text-sm text-gray-500 leading-5 rounded-full bg-amber-200">{props.name}</div>
+                <MetadataPropertyBreadcrumbs
+                    ancestors={props.property.ancestors || []}
+                    leaf={props.property.propertyKey}
+                />
             </td>
             <td className="px-6 py-4 whitespace-nowrap">
                 <span className="text-md text-gray-600">
-                    {props.value}
+                    {props.property.stringValue}
                 </span>
             </td>
         </tr>
@@ -95,7 +117,7 @@ function MetadataRow(props: { name: string, value?: string }) {
 }
 
 function Metadata(props: { dto: OuraRecord }) {
-    const properties = yieldAssetProperties(props.dto.cip25_asset.raw_json);
+    const properties = yieldAssetProperties(props.dto.cip25_asset.raw_json, []);
 
     return (
         <div className="flex flex-col flex-grow basis-0 overflow-auto">
@@ -111,7 +133,7 @@ function Metadata(props: { dto: OuraRecord }) {
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                    {Array.from(properties).map(property => <MetadataRow name={property.propertyKey} value={property.stringValue} />)}
+                    {Array.from(properties).map(property => <MetadataRow property={property} />)}
                 </tbody>
             </table>
         </div>
