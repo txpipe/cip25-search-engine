@@ -1,14 +1,13 @@
 import { LoaderFunction, useLoaderData } from "remix";
-import { OuraRecord, fetchByTerm } from "../../fetching";
+import { OuraRecord, fetchShuffle } from "../../fetching";
 import { useState } from "react";
 
 import AssetCard from "~/components/asset-card"
 import AssetModal from "~/components/asset-modal";
-import SearchBox from "~/components/search-box";
 
 export const loader: LoaderFunction = async (): Promise<OuraRecord[]> => {
     // TODO: use custom fetch for shuffled results
-    return await fetchByTerm({ term: null });
+    return await fetchShuffle({});
 };
 
 export default function () {

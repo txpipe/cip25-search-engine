@@ -1,11 +1,9 @@
 import { Link, LoaderFunction, useLoaderData } from "remix";
 import AssetCard from "~/components/asset-card";
-import { fetchByTerm, OuraRecord } from "~/fetching";
+import { fetchShuffle, OuraRecord } from "~/fetching";
 
-export const loader: LoaderFunction = async ({ request }): Promise<OuraRecord[]> => {
-    let url = new URL(request.url);
-    let term = url.searchParams.get("term");
-    return await fetchByTerm({ term });
+export const loader: LoaderFunction = async (): Promise<OuraRecord[]> => {
+    return await fetchShuffle({});
 };
 
 function Intro() {

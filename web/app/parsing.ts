@@ -1,3 +1,4 @@
+import { OuraRecord } from "./fetching";
 
 export enum PropertyStereotype {
     Artist = "artist",
@@ -86,4 +87,10 @@ export function* yieldAssetFiles(asset: any): IterableIterator<AssetFile> {
             yield obj;
         }
     }
+}
+
+export function findLastTimestamp(assets: OuraRecord[]): number | undefined {
+    if (!assets.length) return undefined;
+    const last = assets[assets.length - 1];
+    return last["@timestamp"];
 }
