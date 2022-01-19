@@ -93,21 +93,23 @@ function Properties(props: { dto: OuraRecord }) {
     const properties = yieldAssetProperties(props.dto.cip25_asset.raw_json);
 
     return (
-        <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-                <tr>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Property
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Value
-                    </th>
-                </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-                {Array.from(properties).map(property => <PropertyRow name={property.propertyKey} value={property.stringValue} />)}
-            </tbody>
-        </table>
+        <div className="flex flex-col flex-grow basis-0 overflow-auto">
+            <table className="divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                    <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Property
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Value
+                        </th>
+                    </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                    {Array.from(properties).map(property => <PropertyRow name={property.propertyKey} value={property.stringValue} />)}
+                </tbody>
+            </table>
+        </div>
     )
 }
 
