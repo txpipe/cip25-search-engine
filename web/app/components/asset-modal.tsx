@@ -1,7 +1,7 @@
 
 
 import { Dialog } from '@headlessui/react'
-import { Fragment, PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 
 import { OuraRecord } from '~/fetching'
 
@@ -10,6 +10,7 @@ import classNames from 'classnames';
 
 import { ArrowCircleDownIcon } from '@heroicons/react/outline'
 import { AssetFile, yieldAssetFiles, yieldAssetProperties } from '~/parsing';
+import { Link } from 'remix';
 
 function NiceTabPanel(props: PropsWithChildren<{}>) {
     return (<Tab.Panel className="flex flex-col flex-grow">{props.children}</Tab.Panel>)
@@ -176,7 +177,10 @@ export default function AssetModal(props: {
                 <Dialog.Title className="text-gray-800 text-3xl mb-3">{dto.cip25_asset.name || dto.cip25_asset.asset}</Dialog.Title>
 
                 <Dialog.Description className="mb-3 text-gray-600">
-                    {dto.cip25_asset.policy}
+                    <p className="text-gray-400">policy:</p>
+                    <Link to={`/policies/${dto.cip25_asset.policy}`} className="outline-none underline text-indigo-500">
+                        {dto.cip25_asset.policy}
+                    </Link>
                 </Dialog.Description>
 
                 <Tab.Group defaultIndex={0}>
