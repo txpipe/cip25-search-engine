@@ -51,7 +51,7 @@ export default function AssetCard(props: { dto: OuraRecord, onSelect?: (dto: Our
 
     return (
         <div className="overflow-hidden shadow-lg rounded-lg h-90 w-full cursor-pointer m-auto">
-            <a href="#" className="w-full block h-full" onClick={onSelect}>
+            <div className="w-full block h-full cursor-pointer" onClick={onSelect}>
                 <div className="h-60 w-full">
                     <LazyMount fallback={null} className="w-full h-full">
                         <LoadableImage dto={props.dto} />
@@ -73,7 +73,7 @@ export default function AssetCard(props: { dto: OuraRecord, onSelect?: (dto: Our
 
                     </div>
                 </div>
-            </a >
-        </div >
+            </div>
+        </div>
     )
 }
