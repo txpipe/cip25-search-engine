@@ -9,7 +9,7 @@ data:
     type = "N2N"
     address = ["Tcp", "relays-new.cardano-mainnet.iohk.io:3001"]
     magic = "mainnet"
-    since = [50873752, "943f92fb07b5061724f831f036ac7962d55f7b992043239265663cce387eebd5"]
+    since = [51059593, "6ceffc63e6d7118e82ab3387b608d27d7e89f6524f81494fd182208cf2b4da40"]
 
     [[filters]]
     type = "Fingerprint"

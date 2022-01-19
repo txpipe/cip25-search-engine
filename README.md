@@ -83,7 +83,7 @@ Initially, you'll probably see few or no results at all. This is because _Oura_ 
 
 ### Waiting for Data
 
-The configuration used Oura instance of this template starts to index event from slot `50873752`. If want to start indexing from the beginning of history, you'll need to adjust the configuration values found in `/k8s/oura.yaml`. For more information on how to configure _Oura_, please check the [documentation](https://txpipe.github.io/oura).
+The configuration used Oura instance of this template starts to index event from slot `51059593`. If want to start indexing from the beginning of history, you'll need to adjust the configuration values found in `/k8s/oura.yaml`. For more information on how to configure _Oura_, please check the [documentation](https://txpipe.github.io/oura).
 
 ## Local Development
 
