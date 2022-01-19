@@ -110,10 +110,15 @@ export function computeAssetStats(record: OuraRecord): AssetStats {
 // TODO
 const FALLBACK_IMAGE = "";
 
+// TODO: allow change via config
+// IDEA: use round-robbing over multiple to paralelize browser requests
+const IPFS_GATEWAY = "https://cf-ipfs.com";
+// const IPFS_GATEWAY = "https://ipfs.io";
+
 export function rawIpfsUriToBrowserUrl(raw?: string | null): string {
     if (!raw) return FALLBACK_IMAGE;
     // not nice, but works. Don't judge me.
     raw = raw.replace("ipfs://", "");
     raw = raw.replace("ipfs/", "");
-    return `https://ipfs.io/ipfs/${raw}`;
+    return `${IPFS_GATEWAY}/ipfs/${raw}`;
 }
